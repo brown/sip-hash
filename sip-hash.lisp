@@ -4,7 +4,7 @@
 ;;;; Author: Robert Brown (robert.brown@gmail.com)
 
 (in-package #:sip-hash)
-(declaim #.*optimize-default*)
+(declaim #.*optimize-fast-unsafe*)
 
 (defmacro mod-2^64 (x) `(logand ,x #xffffffffffffffff))
 
@@ -32,7 +32,7 @@ next. Use (RETURN) to exit the CASE-FALL-THROUGH."
          ,@(reverse body)
          ,end))))
 
-(declaim (inline rotate-right-64))
+(declaim (inline rotate-left-64))
 
 (defun rotate-left-64 (x shift)
  (declare (type uint64 x)
