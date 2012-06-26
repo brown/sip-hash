@@ -13,6 +13,7 @@
 
 (defmacro incf64 (place x) `(setf ,place (u64+ ,place ,x)))
 (defmacro logiorf (place x) `(setf ,place (logior ,place ,x)))
+(defmacro logxorf (place x) `(setf ,place (logxor ,place ,x)))
 
 (defmacro case-fall-through (key-form &body cases)
  "Equivalent to CASE, but control \"falls-through\" from one case form to the
@@ -57,20 +58,19 @@ next. Use (RETURN) to exit the CASE-FALL-THROUGH."
          (ash (aref octets (+ index 7)) 56)))
 
 ;; (defmacro sip-round (v0 v1 v2 v3)
-;;   (macrolet ((left (x y rotation)
-;;                `(progn (incf64 ,x ,y)
-;;                        (setf ,y (logxor (rotate-left-64 ,y ,rotation) ,x))
-;;                        (setf ,x (rotate-left-64 ,x 32))))
-;;              (right (x y rotation)
-;;                `(progn (incf64 ,x ,y)
-;;                        (setf ,y (logxor (rotate-left-64 ,y ,rotation) ,x)))))
-;;     `(progn (left ,v0 ,v1 13)
+;;   `(macrolet ((left (x y rotation)
+;;                 `(progn (incf64 ,x ,y)
+;;                         (setf ,y (logxor (rotate-left-64 ,y ,rotation) ,x))
+;;                         (setf ,x (rotate-left-64 ,x 32))))
+;;               (right (x y rotation)
+;;                 `(progn (incf64 ,x ,y)
+;;                         (setf ,y (logxor (rotate-left-64 ,y ,rotation) ,x)))))
+;;      (progn (left ,v0 ,v1 13)
 ;;             (right ,v2 ,v3 16)
-;;             (left ,v2 ,v1 17)
-;;             (right ,v0 ,v3 21))))
+;;             (right ,v0 ,v3 21)
+;;             (left ,v2 ,v1 17))))
 
 (defmacro rotatef64 (place x) `(setf ,place (rotate-left-64 ,place ,x)))
-(defmacro logxorf (place x) `(setf ,place (logxor ,place ,x)))
 
 (defmacro sip-round (v0 v1 v2 v3)
   `(progn (incf64 ,v0 ,v1)      (incf64 ,v2 ,v3)
