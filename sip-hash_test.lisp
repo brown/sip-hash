@@ -38,9 +38,7 @@
 http://131002.net/siphash/siphash24.c")
 
 (deftest test-sip-hash-2-4 ()
-  (let ((input (make-octet-vector 64)))
-    (dotimes (i (length input))
-      (setf (aref input i) i))
+  (let ((input (make-octet-vector 64 :initial-contents (loop for i below 64 collect i))))
     (loop for expected-result in +expected-results+
           for end from 0
           do (let ((result (hash-2-4 input #x0706050403020100 #x0f0e0d0c0b0a0908 :end end)))
