@@ -20,7 +20,7 @@
 
 (in-suite test-sip-hash)
 
-(defconst +expected-results+
+(defconst +expected-hash-values+
   '(#x726fdb47dd0e0e31 #x74f839c593dc67fd #x0d6c8009d9a94f5a #x85676696d7fb7e2d #xcf2794e0277187b7
     #x18765564cd99a68d #xcbc9466e58fee3ce #xab0200f58b01d137 #x93f5f5799a932462 #x9e0082df0ba9e4b0
     #x7a5dbbc594ddb9f3 #xf4b32f46226bada7 #x751e8fbc860ee5fb #x14ea5627c0843d90 #xf723ca908e7af2ee
@@ -34,12 +34,18 @@
     #xee64435a9752fe72 #xa192d576b245165a #x0a8787bf8ecb74b2 #x81b3e73d20b49b6f #x7fa8220ba3b2ecea
     #x245731c13ca42499 #xb78dbfaf3a8d83bd #xea1ad565322a1a0b #x60e61c23a3795013 #x6606d7e446282b93
     #x6ca4ecb15c5f91e1 #x9f626da15c9625f3 #xe51b38608ef25f57 #x958a324ceb064572)
-    "Expected hash values extracted the C reference implementation:
+    "Expected hash values extracted the from the C reference implementation available here:
 http://131002.net/siphash/siphash24.c")
 
-(deftest test-sip-hash-2-4 ()
+(deftest expected-hash-values ()
   (let ((input (make-octet-vector 64 :initial-contents (loop for i below 64 collect i))))
-    (loop for expected-result in +expected-results+
+    (loop for expected-result in +expected-hash-values+
           for end from 0
           do (let ((result (hash-2-4 input #x0706050403020100 #x0f0e0d0c0b0a0908 :end end)))
                (is (= result expected-result))))))
+
+(deftest argument-processing ()
+  (let ((octets (string-to-utf8-octets "hello world")))
+    (is (= (hash-2-4 octets 0 0 :end 5) (hash-2-4 (subseq octets 0 5) 0 0)))
+    (is (= (hash-2-4 octets 0 0 :start 6) (hash-2-4 (subseq octets 6) 0 0)))
+    (is (= (hash-2-4 octets 0 0 :end nil) (hash-2-4 octets 0 0)))))
