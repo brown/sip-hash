@@ -16,8 +16,8 @@
 (define-modify-macro rotatef-u64 (x) rotate-u64 "Rotate 64-bit PLACE left by X bit positions.")
 
 (defmacro case-fall-through (key-form &body cases)
- "Equivalent to CASE, but control \"falls-through\" from one case form to the
-next. Use (RETURN) to exit the CASE-FALL-THROUGH."
+ "Equivalent to CASE, but control falls through from one case form to the next.
+Use (RETURN) to exit the CASE-FALL-THROUGH form."
  (let* ((end (gensym "END"))
         (go-cases ())
         (body ()))
@@ -46,17 +46,19 @@ next. Use (RETURN) to exit the CASE-FALL-THROUGH."
 
 (declaim (inline load-64))
 
-(defun load-64 (octets index)
- (declare (type octet-vector octets)
-          (type vector-index index))
- (logior (aref octets index)
-         (ash (aref octets (+ index 1)) 8)
-         (ash (aref octets (+ index 2)) 16)
-         (ash (aref octets (+ index 3)) 24)
-         (ash (aref octets (+ index 4)) 32)
-         (ash (aref octets (+ index 5)) 40)
-         (ash (aref octets (+ index 6)) 48)
-         (ash (aref octets (+ index 7)) 56)))
+(defun load-64 (octets position)
+  "Returns the unsigned 64-bit integer stored as 8 octets in little-endian form
+starting at POSITION in OCTETS."
+  (declare (type octet-vector octets)
+           (type vector-index position))
+  (logior (aref octets position)
+          (ash (aref octets (+ position 1)) 8)
+          (ash (aref octets (+ position 2)) 16)
+          (ash (aref octets (+ position 3)) 24)
+          (ash (aref octets (+ position 4)) 32)
+          (ash (aref octets (+ position 5)) 40)
+          (ash (aref octets (+ position 6)) 48)
+          (ash (aref octets (+ position 7)) 56)))
 
 (defmacro sip-round (v0 v1 v2 v3)
   `(progn (incf-u64 ,v0 ,v1)        (incf-u64 ,v2 ,v3)
