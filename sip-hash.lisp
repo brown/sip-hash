@@ -42,7 +42,7 @@ Use (RETURN) to exit the CASE-FALL-THROUGH form."
   #+sbcl
   (sb-rotate-byte:rotate-byte count (byte 64 0) x)
   #-sbcl
-  (logior (ash x count) (mod-2^64 (ash x (- count 64)))))
+  (logior (mod-2^64 (ash x count)) (ash x (- count 64))))
 
 (declaim (inline load-64))
 
@@ -111,6 +111,7 @@ starting at POSITION in OCTETS."
 (define-sip-hash hash-2-4 2 4
   "Returns SipHasp-2-4 hash code for positions START through END of OCTETS,
 using the initial state stored in K0 and K1.")
+
 (define-sip-hash hash-4-8 4 8
   "Returns SipHasp-4-8 hash code for positions START through END of OCTETS,
 using the initial state stored in K0 and K1.")
