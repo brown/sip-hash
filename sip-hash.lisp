@@ -44,22 +44,6 @@ Use (RETURN) to exit the CASE-FALL-THROUGH form."
   #-sbcl
   (logior (mod-2^64 (ash x count)) (ash x (- count 64))))
 
-(declaim (inline load-64))
-
-(defun load-64 (octets position)
-  "Returns the unsigned 64-bit integer stored as 8 octets in little-endian form
-starting at POSITION in OCTETS."
-  (declare (type octet-vector octets)
-           (type vector-index position))
-  (logior (aref octets position)
-          (ash (aref octets (+ position 1)) 8)
-          (ash (aref octets (+ position 2)) 16)
-          (ash (aref octets (+ position 3)) 24)
-          (ash (aref octets (+ position 4)) 32)
-          (ash (aref octets (+ position 5)) 40)
-          (ash (aref octets (+ position 6)) 48)
-          (ash (aref octets (+ position 7)) 56)))
-
 (defmacro sip-round (v0 v1 v2 v3)
   `(progn (incf-u64 ,v0 ,v1)        (incf-u64 ,v2 ,v3)
           (rotatef-u64 ,v1 13)      (rotatef-u64 ,v3 16)
@@ -85,7 +69,7 @@ starting at POSITION in OCTETS."
        (unless end (setf end (length octets)))
        ;; Compress each 64-bit message block.
        (loop while (<= index (- end 8)) do
-         (let ((m (load-64 octets index)))
+         (let ((m (nibbles:ub64ref/le octets index)))
            (logxorf v3 m)
            ,@(make-list compress-rounds :initial-element '(sip-round v0 v1 v2 v3))
            (logxorf v0 m)
