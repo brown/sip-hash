@@ -1,14 +1,6 @@
 
 ;;;; sip-hash.asd
 
-(in-package #:common-lisp-user)
-
-(defpackage #:sip-hash-system
- (:documentation "System definition for the SIP-HASH package.")
- (:use #:common-lisp #:asdf))
-
-(in-package #:sip-hash-system)
-
 (defsystem sip-hash
  :name "SipHash"
  :description "SipHash hash functions"
