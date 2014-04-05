@@ -4,7 +4,6 @@
 ;;;; Author: Robert Brown (robert.brown@gmail.com)
 
 (in-package #:sip-hash)
-(declaim #.*optimize-fast-unsafe*)
 
 (defmacro mod-2^64 (x) `(logand ,x #.(ldb (byte 64 0) -1)))
 (defmacro +-u64 (x y) `(mod-2^64 (+ ,x ,y)))

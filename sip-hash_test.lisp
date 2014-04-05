@@ -13,7 +13,6 @@
  (:export #:test-sip-hash))
 
 (in-package #:sip-hash-test)
-(declaim #.*optimize-default*)
 
 (defsuite (test-sip-hash :in root-suite) ()
  (run-child-tests))
