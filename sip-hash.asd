@@ -1,6 +1,4 @@
 
-;;;; sip-hash.asd
-
 (defsystem sip-hash
   :name "SipHash"
   :description "SipHash hash functions"
