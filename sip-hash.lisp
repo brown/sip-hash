@@ -54,6 +54,10 @@ Use (RETURN) to exit the CASE-FALL-THROUGH form."
           (rotatef-u64 ,v2 32)))
 
 (defmacro define-sip-hash (function-name compress-rounds finalization-rounds documentation)
+  "Defines a function called FUNCTION-NAME that implements the SipHash hash
+function that performs COMPRESS-ROUNDS compression rounds and
+FINALIZATION-ROUNDS finalization rounds.  The defined SipHash function is
+documented with a DOCUMENTATION string."
   `(defun ,function-name (octets k0 k1 &key (start 0) end)
      ,documentation
      (declare (type octet-vector octets)
@@ -92,9 +96,9 @@ Use (RETURN) to exit the CASE-FALL-THROUGH form."
        (logxor v0 v1 v2 v3))))
 
 (define-sip-hash hash-2-4 2 4
-  "Returns SipHasp-2-4 hash code for positions START through END of OCTETS,
+  "Returns the SipHasp-2-4 hash code for positions START through END of OCTETS,
 using the initial state stored in K0 and K1.")
 
 (define-sip-hash hash-4-8 4 8
-  "Returns SipHasp-4-8 hash code for positions START through END of OCTETS,
+  "Returns the SipHasp-4-8 hash code for positions START through END of OCTETS,
 using the initial state stored in K0 and K1.")
