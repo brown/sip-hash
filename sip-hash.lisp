@@ -10,27 +10,9 @@
 (defmacro ash-u64 (x y) `(mod-2^64 (ash ,x ,y)))
 
 (define-modify-macro incf-u64 (x) +-u64 "Increment, modulo 2^64, PLACE by X.")
-(define-modify-macro logiorf (x) logior)
-(define-modify-macro logxorf (x) logxor)
+(define-modify-macro logiorf (x) logior "Logically inclusive or PLACE by X.")
+(define-modify-macro logxorf (x) logxor "Logically exclusive or PLACE by X.")
 (define-modify-macro rotatef-u64 (x) rotate-u64 "Rotate 64-bit PLACE left by X bit positions.")
-
-(defmacro case-fall-through (key-form &body cases)
- "Equivalent to CASE, but control falls through from one case form to the next.
-Use (RETURN) to exit the CASE-FALL-THROUGH form."
- (let* ((end (gensym "END"))
-        (go-cases ())
-        (body ()))
-   (loop for (key . forms) in cases do
-     (let ((label (gensym "L")))
-       (push `(,key (go ,label)) go-cases)
-       (push label body)
-       (dolist (form forms) (push form body))))
-   `(block nil
-      (tagbody
-         (case ,key-form ,@(reverse go-cases))
-         (return)
-         ,@(reverse body)
-         ,end))))
 
 (declaim (inline rotate-u64))
 
@@ -79,13 +61,22 @@ documented with a DOCUMENTATION string."
            (incf index 8)))
        ;; Compress the last message block.
        (let ((last-m (ash-u64 (- end start) 56)))
-         (case-fall-through (- end index)
-           (7 (logiorf last-m (ash (aref octets (+ index 6)) 48)))
-           (6 (logiorf last-m (ash (aref octets (+ index 5)) 40)))
-           (5 (logiorf last-m (ash (aref octets (+ index 4)) 32)))
-           (4 (logiorf last-m (ash (aref octets (+ index 3)) 24)))
-           (3 (logiorf last-m (ash (aref octets (+ index 2)) 16)))
-           (2 (logiorf last-m (ash (aref octets (+ index 1)) 8)))
+         (case (- end index)
+           (7
+            (logiorf last-m (nibbles:ub32ref/le octets index))
+            (logiorf last-m (ash (nibbles:ub16ref/le octets (+ index 4)) 32))
+            (logiorf last-m (ash (aref octets (+ index 6)) 48)))
+           (6
+            (logiorf last-m (nibbles:ub32ref/le octets index))
+            (logiorf last-m (ash (nibbles:ub16ref/le octets (+ index 4)) 32)))
+           (5
+            (logiorf last-m (nibbles:ub32ref/le octets index))
+            (logiorf last-m (ash (aref octets (+ index 4)) 32)))
+           (4 (logiorf last-m (nibbles:ub32ref/le octets index)))
+           (3
+            (logiorf last-m (nibbles:ub16ref/le octets index))
+            (logiorf last-m (ash (aref octets (+ index 2)) 16)))
+           (2 (logiorf last-m (nibbles:ub16ref/le octets index)))
            (1 (logiorf last-m (aref octets index))))
          (logxorf v3 last-m)
          ,@(make-list compress-rounds :initial-element '(sip-round v0 v1 v2 v3))
@@ -96,9 +87,9 @@ documented with a DOCUMENTATION string."
        (logxor v0 v1 v2 v3))))
 
 (define-sip-hash hash-2-4 2 4
-  "Returns the SipHasp-2-4 hash code for positions START through END of OCTETS,
+  "Returns the SipHash-2-4 hash code for positions START through END of OCTETS,
 using the initial state stored in K0 and K1.")
 
 (define-sip-hash hash-4-8 4 8
-  "Returns the SipHasp-4-8 hash code for positions START through END of OCTETS,
+  "Returns the SipHash-4-8 hash code for positions START through END of OCTETS,
 using the initial state stored in K0 and K1.")
