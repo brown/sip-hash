@@ -12,5 +12,5 @@ http://131002.net/siphash/
 SipHash API
 ===========
 
-    hash-2-4        An implemetation of SipHash-2-4
-    hash-4-8        An implemetation of SipHash-4-8
+    hash-2-4        An implementation of SipHash-2-4
+    hash-4-8        An implementation of SipHash-4-8
