@@ -7,8 +7,8 @@ hash functions designed by Jean-Philippe Aumasson and Daniel J. Bernstein.
 For more information
 ====================
 
-http://131002.net/siphash/
-https://github.com/veorq/SipHash")
+    http://131002.net/siphash/
+    https://github.com/veorq/SipHash
 
 sip-hash API
 ============
