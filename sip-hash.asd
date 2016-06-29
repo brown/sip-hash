@@ -5,7 +5,7 @@
   :long-description
 "SipHash, a cryptographically strong family of hash functions designed by
 Jean-Philippe Aumasson and Daniel J. Bernstein.  (http://131002.net/siphash/)"
-  :version "1.5"
+  :version "1.6"
   :author "Robert Brown"
   :license "Public domain."
   :defsystem-depends-on (com.google.base)
