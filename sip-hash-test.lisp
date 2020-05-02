@@ -1,6 +1,6 @@
 ;;;; SipHash unit tests.
 
-;;;; Author: Robert Brown (robert.brown@gmail.com)
+;;;; Author: Robert Brown <robert.brown@gmail.com>
 
 (in-package #:common-lisp-user)
 

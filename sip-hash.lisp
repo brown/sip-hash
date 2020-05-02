@@ -1,7 +1,7 @@
 ;;;; SipHash, a cryptographically strong family of hash functions designed by
 ;;;; Jean-Philippe Aumasson and Daniel J. Bernstein.  (http://131002.net/siphash/)
 
-;;;; Author: Robert Brown (robert.brown@gmail.com)
+;;;; Author: Robert Brown <robert.brown@gmail.com>
 
 (in-package #:sip-hash)
 
@@ -95,8 +95,7 @@ result is produced."
                  (logxorf v1 #xdd)
                  ,@finalize
                  (let ((h1 (logxor v0 v1 v2 v3)))
-                   (values h0 h1))))
-         ))))
+                   (values h0 h1))))))))
 
 (define-sip-hash hash-64-2-4 2 4 nil
   "Returns as an (unsigned-byte 64) the 64-bit SipHash-2-4 hash code for
