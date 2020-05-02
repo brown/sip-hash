@@ -33,8 +33,8 @@
     #xee64435a9752fe72 #xa192d576b245165a #x0a8787bf8ecb74b2 #x81b3e73d20b49b6f #x7fa8220ba3b2ecea
     #x245731c13ca42499 #xb78dbfaf3a8d83bd #xea1ad565322a1a0b #x60e61c23a3795013 #x6606d7e446282b93
     #x6ca4ecb15c5f91e1 #x9f626da15c9625f3 #xe51b38608ef25f57 #x958a324ceb064572)
-    "Expected 64-bit hash values extracted the from the C reference
-implementation available here: https://github.com/veorq/SipHash")
+    "Expected 64-bit hash values extracted from the C reference implementation
+available here: https://github.com/veorq/SipHash")
 
 (defconst +expected-hash-values-128+
   '((#xe6a825ba047f81a3 #x930255c71472f66d) (#x44af996bd8c187da #x45fc229b11597634)
@@ -69,8 +69,8 @@ implementation available here: https://github.com/veorq/SipHash")
     (#xd8d6a998dea5fc57 #x1d8a3d58d0386400) (#xbe1cdcef1cdeec9f #x595357d9743676d4)
     (#x53f128eb000c04e3 #x40e772d8cb73ca66) (#xfe1d836a9a009776 #x7a0f6793591ca9cc)
     (#xa067f52123545358 #xbd5947f0a447d505) (#x4a83502f77d15051 #x7cbd3f979a063e50))
-    "Expected 128-bit hash values extracted the from the C reference
-implementation available here: https://github.com/veorq/SipHash")
+    "Expected 128-bit hash values extracted from the C reference implementation
+available here: https://github.com/veorq/SipHash")
 
 (deftest expected-hash-values-64 ()
   (let ((input (make-octet-vector 64 :initial-contents (loop for i below 64 collect i))))
