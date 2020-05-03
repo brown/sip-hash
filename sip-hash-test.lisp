@@ -2,7 +2,7 @@
 
 ;;;; Author: Robert Brown <robert.brown@gmail.com>
 
-(in-package #:common-lisp-user)
+(in-package #:common-lisp)
 
 (defpackage #:sip-hash-test
  (:documentation "Test code in the SIP-HASH package.")
@@ -92,10 +92,8 @@ available here: https://github.com/veorq/SipHash")
   (let ((octets (string-to-utf8-octets "hello world")))
     (is (= (hash-64-2-4 octets 0 0 :end 5) (hash-64-2-4 (subseq octets 0 5) 0 0)))
     (is (= (hash-64-2-4 octets 0 0 :start 6) (hash-64-2-4 (subseq octets 6) 0 0)))
-    (is (= (hash-64-2-4 octets 0 0 :end nil) (hash-64-2-4 octets 0 0)))
     (is (= (hash-64-4-8 octets 0 0 :end 5) (hash-64-4-8 (subseq octets 0 5) 0 0)))
-    (is (= (hash-64-4-8 octets 0 0 :start 6) (hash-64-4-8 (subseq octets 6) 0 0)))
-    (is (= (hash-64-4-8 octets 0 0 :end nil) (hash-64-4-8 octets 0 0)))))
+    (is (= (hash-64-4-8 octets 0 0 :start 6) (hash-64-4-8 (subseq octets 6) 0 0)))))
 
 (deftest argument-processing-128 ()
   (let ((octets (string-to-utf8-octets "hello world")))
@@ -103,11 +101,7 @@ available here: https://github.com/veorq/SipHash")
                (multiple-value-list (hash-128-2-4 (subseq octets 0 5) 0 0))))
     (is (equal (multiple-value-list (hash-128-2-4 octets 0 0 :start 6))
                (multiple-value-list (hash-128-2-4 (subseq octets 6) 0 0))))
-    (is (equal (multiple-value-list (hash-128-2-4 octets 0 0 :end nil))
-               (multiple-value-list (hash-128-2-4 octets 0 0))))
     (is (equal (multiple-value-list (hash-128-4-8 octets 0 0 :end 5))
                (multiple-value-list (hash-128-4-8 (subseq octets 0 5) 0 0))))
     (is (equal (multiple-value-list (hash-128-4-8 octets 0 0 :start 6))
-               (multiple-value-list (hash-128-4-8 (subseq octets 6) 0 0))))
-    (is (equal (multiple-value-list (hash-128-4-8 octets 0 0 :end nil))
-               (multiple-value-list (hash-128-4-8 octets 0 0))))))
+               (multiple-value-list (hash-128-4-8 (subseq octets 6) 0 0))))))

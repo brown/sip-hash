@@ -1,5 +1,4 @@
-
-(in-package #:common-lisp-user)
+(in-package #:common-lisp)
 
 (defpackage #:sip-hash
  (:documentation "An implementation of the SipHash family of hash functions.")

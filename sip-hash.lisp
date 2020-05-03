@@ -44,19 +44,17 @@ documented with a DOCUMENTATION string.  When DOUBLE is true, a 128-bit hash
 result is produced."
   (let ((compress (make-list compress-rounds :initial-element '(sip-round v0 v1 v2 v3)))
         (finalize (make-list finalization-rounds :initial-element '(sip-round v0 v1 v2 v3))))
-    `(defun ,function-name (octets k0 k1 &key (start 0) end)
+    `(defun ,function-name (octets k0 k1 &key (start 0) (end (length octets)))
        ,documentation
        (declare (type octet-vector octets)
                 (type uint64 k0 k1)
-                (type vector-index start)
-                (type (or null vector-index) end))
+                (type vector-index start end))
        (let ((v0 (logxor k0 #x736f6d6570736575))
              (v1 (logxor k1 #x646f72616e646f6d))
              (v2 (logxor k0 #x6c7967656e657261))
              (v3 (logxor k1 #x7465646279746573))
              (index start))
          ,(when double '(logxorf v1 #xee))
-         (unless end (setf end (length octets)))
          ;; Compress each 64-bit message block.
          (loop while (<= index (- end 8)) do
            (let ((m (nibbles:ub64ref/le octets index)))
