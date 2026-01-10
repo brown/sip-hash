@@ -1,5 +1,5 @@
 ;;;; SipHash, a cryptographically strong family of hash functions designed by
-;;;; Jean-Philippe Aumasson and Daniel J. Bernstein.  (http://131002.net/siphash/)
+;;;; Jean-Philippe Aumasson and Daniel J. Bernstein.  (https://en.wikipedia.org/wiki/SipHash)
 
 ;;;; Author: Robert Brown <robert.brown@gmail.com>
 

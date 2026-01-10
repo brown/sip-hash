@@ -3,8 +3,9 @@
 A Common Lisp implementation of SipHash, a cryptographically strong family of
 hash functions designed by Jean-Philippe Aumasson and Daniel J. Bernstein.
 
-For more information see the [SipHash web site](http://131002.net/siphash) and
-the [SipHash reference implementation](https://github.com/veorq/SipHash).
+For more information see the [SipHash Wikipedia
+entry](https://en.wikipedia.org/wiki/SipHash) and the [SipHash reference
+implementation](https://github.com/veorq/SipHash).
 
 ## The sip-hash API
 
