@@ -9,6 +9,14 @@ implementation](https://github.com/veorq/SipHash).
 
 ## The sip-hash API
 
+#### hash-64-1-3 octets k0 k1 &key (start 0) (end (length octets))
+
+```
+Returns as an (unsigned-byte 64) the 64-bit SipHash-1-3 hash code for
+positions START through END of OCTETS, using the initial state stored in K0
+and K1.
+```
+
 #### hash-64-2-4 octets k0 k1 &key (start 0) (end (length octets))
 
 ```

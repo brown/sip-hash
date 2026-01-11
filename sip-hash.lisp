@@ -97,6 +97,11 @@ result is produced."
                  (let ((h1 (logxor v0 v1 v2 v3)))
                    (values h0 h1))))))))
 
+(define-sip-hash hash-64-1-3 1 3 nil
+  "Returns as an (unsigned-byte 64) the 64-bit SipHash-1-3 hash code for
+positions START through END of OCTETS, using the initial state stored in K0 and
+K1.")
+
 (define-sip-hash hash-64-2-4 2 4 nil
   "Returns as an (unsigned-byte 64) the 64-bit SipHash-2-4 hash code for
 positions START through END of OCTETS, using the initial state stored in K0 and

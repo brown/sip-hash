@@ -19,7 +19,24 @@
 
 (in-suite test-sip-hash)
 
-(defconst +expected-hash-values-64+
+(defconst +expected-hash-values-64-1-3+
+  '(#xabac0158050fc4dc #xc9f49bf37d57ca93 #x82cb9b024dc7d44d #x8bf80ab8e7ddf7fb #xcf75576088d38328
+    #xdef9d52f49533b67 #xc50d2b50c59f22a7 #xd3927d989bb11140 #x369095118d299a8e #x25a48eb36c063de4
+    #x79de85ee92ff097f #x70c118c1f94dc352 #x78a384b157b4d9a2 #x306f760c1229ffa7 #x605aa111c0f95d34
+    #xd320d86d2a519956 #xcc4fdd1a7d908b66 #x9cf2689063dbd80c #x8ffc389cb473e63e #xf21f9de58d297d1c
+    #xc0dc2f46a6cce040 #xb992abfe2b45f844 #x7ffe7b9ba320872e #x525a0e7fdae6c123 #xf464aeb267349c8c
+    #x45cd5928705b0979 #x3a3e35e3ca9913a5 #xa91dc74e4ade3b35 #xfb0bed02ef6cd00d #x88d93cb44ab1e1f4
+    #x540f11d643c5e663 #x2370dd1f8c21d1bc #x81157b6c16a7b60d #x4d54b9e57a8ff9bf #x759f12781f2a753e
+    #xcea1a3bebf186b91 #x2cf508d3ada26206 #xb6101c2da3c33057 #xb3f47496ae3a36a1 #x626b57547b108392
+    #xc1d2363299e41531 #x667cc1923f1ad944 #x65704ffec8138825 #x24f280d1c28949a6 #xc2ca1cedfaf8876b
+    #xc2164bfc9f042196 #xa16e9c9368b1d623 #x49fb169c8b5114fd #x9f3143f8df074c46 #xc6fdaf2412cc86b3
+    #x7eaf49d10a52098f #x1cf313559d292f9a #xc44a30dda2f41f12 #x36fae98943a71ed0 #x318fb34c73f0bce6
+    #xa27abf3670a7e980 #xb4bcc0db243c6d75 #x23f8d852fdb71513 #x8f035f4da67d8a08 #xd89cd0e5b7e8f148
+    #xf6f4e6bcf7a644ee #xaec59ad80f1837f2 #xc3b2f6154b6694e0 #x9d199062b7bbb3a8)
+    "Expected 64-bit hash values extracted from the Rust implementation
+available here: https://github.com/jedisct1/rust-siphash")
+
+(defconst +expected-hash-values-64-2-4+
   '(#x726fdb47dd0e0e31 #x74f839c593dc67fd #x0d6c8009d9a94f5a #x85676696d7fb7e2d #xcf2794e0277187b7
     #x18765564cd99a68d #xcbc9466e58fee3ce #xab0200f58b01d137 #x93f5f5799a932462 #x9e0082df0ba9e4b0
     #x7a5dbbc594ddb9f3 #xf4b32f46226bada7 #x751e8fbc860ee5fb #x14ea5627c0843d90 #xf723ca908e7af2ee
@@ -36,7 +53,7 @@
     "Expected 64-bit hash values extracted from the C reference implementation
 available here: https://github.com/veorq/SipHash")
 
-(defconst +expected-hash-values-128+
+(defconst +expected-hash-values-128-2-4+
   '((#xe6a825ba047f81a3 #x930255c71472f66d) (#x44af996bd8c187da #x45fc229b11597634)
     (#xc75da4a48d227781 #xe4ff0af6de8ba3fc) (#x4ea967520cb6709c #x51ed8529b0b6335f)
     (#xaf8f9c2dc16481f8 #x7955cd7b7c6e0f7d) (#x886f778059876813 #x27960e69077a5254)
@@ -72,16 +89,23 @@ available here: https://github.com/veorq/SipHash")
     "Expected 128-bit hash values extracted from the C reference implementation
 available here: https://github.com/veorq/SipHash")
 
-(deftest expected-hash-values-64 ()
+(deftest expected-hash-values-64-1-3 ()
   (let ((input (make-octet-vector 64 :initial-contents (loop for i below 64 collect i))))
-    (loop for expected in +expected-hash-values-64+
+    (loop for expected in +expected-hash-values-64-1-3+
+          for end from 0
+          do (let ((result (hash-64-1-3 input #x0706050403020100 #x0f0e0d0c0b0a0908 :end end)))
+               (is (= result expected))))))
+
+(deftest expected-hash-values-64-2-4 ()
+  (let ((input (make-octet-vector 64 :initial-contents (loop for i below 64 collect i))))
+    (loop for expected in +expected-hash-values-64-2-4+
           for end from 0
           do (let ((result (hash-64-2-4 input #x0706050403020100 #x0f0e0d0c0b0a0908 :end end)))
                (is (= result expected))))))
 
-(deftest expected-hash-values-128 ()
+(deftest expected-hash-values-128-2-4 ()
   (let ((input (make-octet-vector 64 :initial-contents (loop for i below 64 collect i))))
-    (loop for (e0 e1) in +expected-hash-values-128+
+    (loop for (e0 e1) in +expected-hash-values-128-2-4+
           for end from 0
           do (multiple-value-bind (h0 h1)
                  (hash-128-2-4 input #x0706050403020100 #x0f0e0d0c0b0a0908 :end end)

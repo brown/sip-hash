@@ -9,7 +9,7 @@
 Jean-Philippe Aumasson and Daniel J. Bernstein.  (http://131002.net/siphash/)"
   :name "SipHash"
   :source-control (:git "https://github.com/brown/sip-hash.git")
-  :version "1.8"
+  :version "1.9"
   :defsystem-depends-on (com.google.base)
   :depends-on (com.google.base
                nibbles
@@ -27,7 +27,7 @@ Jean-Philippe Aumasson and Daniel J. Bernstein.  (http://131002.net/siphash/)"
   :license "Public domain"
   :name "SipHash test"
   :source-control (:git "https://github.com/brown/sip-hash.git")
-  :version "1.8"
+  :version "1.9"
   :depends-on (sip-hash hu.dwim.stefil)
   :components
   ((:file "sip-hash-test")))
