@@ -57,7 +57,7 @@ result is produced."
          ,(when double '(logxorf v1 #xee))
          ;; Compress each 64-bit message block.
          (loop while (<= index (- end 8)) do
-           (let ((m (nibbles:ub64ref/le octets index)))
+           (let ((m (ub64ref/le octets index)))
              (logxorf v3 m)
              ,@compress
              (logxorf v0 m)
@@ -66,20 +66,20 @@ result is produced."
          (let ((last-m (ash-u64 (- end start) 56)))
            (case (- end index)
              (7
-              (logiorf last-m (nibbles:ub32ref/le octets index))
-              (logiorf last-m (ash (nibbles:ub16ref/le octets (+ index 4)) 32))
+              (logiorf last-m (ub32ref/le octets index))
+              (logiorf last-m (ash (ub16ref/le octets (+ index 4)) 32))
               (logiorf last-m (ash (aref octets (+ index 6)) 48)))
              (6
-              (logiorf last-m (nibbles:ub32ref/le octets index))
-              (logiorf last-m (ash (nibbles:ub16ref/le octets (+ index 4)) 32)))
+              (logiorf last-m (ub32ref/le octets index))
+              (logiorf last-m (ash (ub16ref/le octets (+ index 4)) 32)))
              (5
-              (logiorf last-m (nibbles:ub32ref/le octets index))
+              (logiorf last-m (ub32ref/le octets index))
               (logiorf last-m (ash (aref octets (+ index 4)) 32)))
-             (4 (logiorf last-m (nibbles:ub32ref/le octets index)))
+             (4 (logiorf last-m (ub32ref/le octets index)))
              (3
-              (logiorf last-m (nibbles:ub16ref/le octets index))
+              (logiorf last-m (ub16ref/le octets index))
               (logiorf last-m (ash (aref octets (+ index 2)) 16)))
-             (2 (logiorf last-m (nibbles:ub16ref/le octets index)))
+             (2 (logiorf last-m (ub16ref/le octets index)))
              (1 (logiorf last-m (aref octets index))))
            (logxorf v3 last-m)
            ,@compress
