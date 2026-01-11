@@ -5,15 +5,17 @@
 
 (in-package #:sip-hash)
 
-(defmacro mod-2^64 (x) `(logand ,x #.(ldb (byte 64 0) -1)))
-(defmacro u64+ (x y) `(mod-2^64 (+ ,x ,y)))
-(defmacro ash-u64 (x y) `(mod-2^64 (ash ,x ,y)))
-
 (define-modify-macro incf64 (x) u64+ "Increment, modulo 2^64, PLACE by X.")
 (define-modify-macro logiorf (x) logior "Logically inclusive or PLACE by X.")
 (define-modify-macro logxorf (x) logxor "Logically exclusive or PLACE by X.")
 (define-modify-macro rotatef-left-64 (x) rotate-left-64
   "Rotate 64-bit PLACE left by X bit positions.")
+
+(declaim (inline u64+))
+
+(defun u64+ (x y)
+  (declare (type uint64 x y))
+  (ldb (byte 64 0) (+ x y)))
 
 (declaim (inline rotate-left-64))
 
@@ -24,7 +26,7 @@
   #+sbcl
   (sb-rotate-byte:rotate-byte count (byte 64 0) x)
   #-sbcl
-  (logior (mod-2^64 (ash x count)) (ash x (- count 64))))
+  (logior (ldb (byte 64 0) (ash x count)) (ldb (byte count (- 64 count)) x)))
 
 (defmacro sip-round (v0 v1 v2 v3)
   `(progn (incf64 ,v0 ,v1)              (incf64 ,v2 ,v3)
@@ -63,7 +65,7 @@ result is produced."
              (logxorf v0 m)
              (incf index 8)))
          ;; Compress the last message block.
-         (let ((last-m (ash-u64 (- end start) 56)))
+         (let ((last-m (ldb (byte 64 0) (ash (- end start) 56))))
            (case (- end index)
              (7
               (logiorf last-m (ub32ref/le octets index))
